@@ -18,13 +18,16 @@ function chart(canvas, data) {
 
   // === y axis
   const step = VIEW_HEIGHT / ROWS_COUNT;
+  const textStep = (yMax - yMin) / ROWS_COUNT;
+
   ctx.beginPath();
   ctx.strokeStyle = '#bbb';
   ctx.font = 'normal 20px Helvetica, sans-serif';
   ctx.fillStyle = '#96a2aa';
   for (let i = 1; i <= ROWS_COUNT; i++) {
     const y = step * i;
-    ctx.fillText(DPI_HEIGHT - PADDING * 2 - y, 5, y + PADDING - 10);
+    const text = yMax - textStep * i;
+    ctx.fillText(text.toString(), 5, y + PADDING - 10);
     ctx.moveTo(0, y + PADDING);
     ctx.lineTo(DPI_WIDTH, y + PADDING);
   }
