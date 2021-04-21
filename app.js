@@ -10,6 +10,8 @@ function chart(canvas, data) {
   canvas.style.height = `${HEIGHT}px`;
   canvas.width = DPI_WIDTH;
   canvas.height = DPI_HEIGHT;
+
+
 }
 
-chart(document.getElementById('chart'));
+chart(document.getElementById('chart'), [[0, 0], [200, 100], [400, 50]]);
