@@ -22,7 +22,7 @@ function chart(canvas, data) {
   ctx.fillStyle = '#96a2aa';
   for (let i = 1; i <= ROWS_COUNT; i++) {
     const y = step * i;
-    ctx.fillText(DPI_HEIGHT - y, 5, y + PADDING - 10);
+    ctx.fillText(DPI_HEIGHT - PADDING * 2 - y, 5, y + PADDING - 10);
     ctx.moveTo(0, y + PADDING);
     ctx.lineTo(DPI_WIDTH, y + PADDING);
   }
@@ -35,7 +35,7 @@ function chart(canvas, data) {
   ctx.strokeStyle = '#ff0100';
 
   for (const [x, y] of data) {
-    ctx.lineTo(x, DPI_HEIGHT - y);
+    ctx.lineTo(x, DPI_HEIGHT - PADDING - y);
   }
   ctx.stroke();
   ctx.closePath();
