@@ -11,7 +11,12 @@ function chart(canvas, data) {
   canvas.width = DPI_WIDTH;
   canvas.height = DPI_HEIGHT;
 
-
+  ctx.beginPath();
+  for (const [x, y] of data) {
+    ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+  ctx.closePath();
 }
 
 chart(document.getElementById('chart'), [[0, 0], [200, 100], [400, 50]]);
