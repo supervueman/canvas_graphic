@@ -12,6 +12,9 @@ function chart(canvas, data) {
   canvas.height = DPI_HEIGHT;
 
   ctx.beginPath();
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = '#ff0100';
+
   for (const [x, y] of data) {
     ctx.lineTo(x, DPI_HEIGHT - y);
   }
