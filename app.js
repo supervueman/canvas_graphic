@@ -13,10 +13,10 @@ function chart(canvas, data) {
 
   ctx.beginPath();
   for (const [x, y] of data) {
-    ctx.lineTo(x, y);
+    ctx.lineTo(x, DPI_HEIGHT - y);
   }
   ctx.stroke();
   ctx.closePath();
 }
 
-chart(document.getElementById('chart'), [[0, 0], [200, 100], [400, 50]]);
+chart(document.getElementById('chart'), [[0, 0], [200, 200], [400, 100], [600, 300]]);
