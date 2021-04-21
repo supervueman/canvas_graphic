@@ -18,7 +18,7 @@ function chart(canvas, data) {
   ctx.strokeStyle = '#bbb';
   ctx.font = 'normal 20px Helvetica, sans-serif';
   ctx.fillStyle = '#96a2aa';
-  for (let i = 1; i < ROWS_COUNT; i++) {
+  for (let i = 1; i <= ROWS_COUNT; i++) {
     const y = step * i;
     ctx.fillText('Test', 0, y);
     ctx.moveTo(0, y);
