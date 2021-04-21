@@ -6,8 +6,6 @@ const DPI_HEIGHT = HEIGHT * 2;
 const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2
 const ROWS_COUNT = 5;
 
-const [yMin, yMax] = computeBoundaries(data);
-
 function chart(canvas, data) {
   const ctx = canvas.getContext('2d');
 
@@ -15,6 +13,8 @@ function chart(canvas, data) {
   canvas.style.height = `${HEIGHT}px`;
   canvas.width = DPI_WIDTH;
   canvas.height = DPI_HEIGHT;
+
+  const [yMin, yMax] = computeBoundaries(data);
 
   // === y axis
   const step = VIEW_HEIGHT / ROWS_COUNT;
