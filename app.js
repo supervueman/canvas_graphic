@@ -16,9 +16,11 @@ function chart(canvas, data) {
   const step = DPI_HEIGHT / ROWS_COUNT;
   ctx.beginPath();
   ctx.strokeStyle = '#bbb';
+  ctx.font = 'normal 20px Helvetica, sans-serif';
+  ctx.fillStyle = '#96a2aa';
   for (let i = 1; i < ROWS_COUNT; i++) {
     const y = step * i;
-
+    ctx.fillText('Test', 0, y);
     ctx.moveTo(0, y);
     ctx.lineTo(DPI_WIDTH, y);
   }
