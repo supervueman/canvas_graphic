@@ -15,6 +15,7 @@ function chart(canvas, data) {
   // === y axis
   const step = DPI_HEIGHT / ROWS_COUNT;
   ctx.beginPath();
+  ctx.strokeStyle = '#bbb';
   for (let i = 1; i < ROWS_COUNT; i++) {
     const y = step * i;
 
