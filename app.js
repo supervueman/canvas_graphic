@@ -2,6 +2,7 @@ const WIDTH = 600;
 const HEIGHT = 200;
 const DPI_WIDTH = WIDTH * 2;
 const DPI_HEIGHT = HEIGHT * 2;
+const ROWS_COUNT = 5;
 
 function chart(canvas, data) {
   const ctx = canvas.getContext('2d');
@@ -10,6 +11,19 @@ function chart(canvas, data) {
   canvas.style.height = `${HEIGHT}px`;
   canvas.width = DPI_WIDTH;
   canvas.height = DPI_HEIGHT;
+
+  // === y axis
+  const step = DPI_HEIGHT / ROWS_COUNT;
+  ctx.beginPath();
+  for (let i = 1; i < ROWS_COUNT; i++) {
+    const y = step * i;
+
+    ctx.moveTo(0, y);
+    ctx.lineTo(DPI_WIDTH, y);
+  }
+  ctx.stroke();
+  ctx.closePath();
+  // ===
 
   ctx.beginPath();
   ctx.lineWidth = 4;
