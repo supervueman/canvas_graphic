@@ -15,6 +15,7 @@ function chart(canvas, data) {
   canvas.height = DPI_HEIGHT;
 
   const [yMin, yMax] = computeBoundaries(data);
+  const yRatio = VIEW_HEIGHT / (yMax - yMin);
 
   // === y axis
   const step = VIEW_HEIGHT / ROWS_COUNT;
@@ -40,13 +41,13 @@ function chart(canvas, data) {
   ctx.strokeStyle = '#ff0100';
 
   for (const [x, y] of data) {
-    ctx.lineTo(x, DPI_HEIGHT - PADDING - y);
+    ctx.lineTo(x, DPI_HEIGHT - PADDING - y * yRatio);
   }
   ctx.stroke();
   ctx.closePath();
 }
 
-chart(document.getElementById('chart'), [[0, 0], [200, 200], [400, 100], [600, 300]]);
+chart(document.getElementById('chart'), [[0, 0], [200, 100], [400, 1000], [600, 200]]);
 
 function computeBoundaries(data) {
   let min
