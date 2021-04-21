@@ -1,7 +1,9 @@
 const WIDTH = 600;
 const HEIGHT = 200;
+const PADDING = 40;
 const DPI_WIDTH = WIDTH * 2;
 const DPI_HEIGHT = HEIGHT * 2;
+const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2
 const ROWS_COUNT = 5;
 
 function chart(canvas, data) {
@@ -13,16 +15,16 @@ function chart(canvas, data) {
   canvas.height = DPI_HEIGHT;
 
   // === y axis
-  const step = DPI_HEIGHT / ROWS_COUNT;
+  const step = VIEW_HEIGHT / ROWS_COUNT;
   ctx.beginPath();
   ctx.strokeStyle = '#bbb';
   ctx.font = 'normal 20px Helvetica, sans-serif';
   ctx.fillStyle = '#96a2aa';
   for (let i = 1; i <= ROWS_COUNT; i++) {
     const y = step * i;
-    ctx.fillText('Test', 0, y);
-    ctx.moveTo(0, y);
-    ctx.lineTo(DPI_WIDTH, y);
+    ctx.fillText(DPI_HEIGHT - y, 5, y + PADDING - 10);
+    ctx.moveTo(0, y + PADDING);
+    ctx.lineTo(DPI_WIDTH, y + PADDING);
   }
   ctx.stroke();
   ctx.closePath();
