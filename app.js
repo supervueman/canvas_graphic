@@ -6,6 +6,8 @@ const DPI_HEIGHT = HEIGHT * 2;
 const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2
 const ROWS_COUNT = 5;
 
+const [yMin, yMax] = computeBoundaries(data);
+
 function chart(canvas, data) {
   const ctx = canvas.getContext('2d');
 
@@ -42,3 +44,18 @@ function chart(canvas, data) {
 }
 
 chart(document.getElementById('chart'), [[0, 0], [200, 200], [400, 100], [600, 300]]);
+
+function computeBoundaries(data) {
+  let min
+  let max
+
+  for (const [, y] of data) {
+    if (typeof min !== 'number') min = y;
+    if (typeof max !== 'number') max = y;
+
+    if (min > y) min = y;
+    if (max < y) max = y;
+  }
+
+  return [min, max];
+}
