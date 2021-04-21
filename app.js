@@ -55,7 +55,7 @@ function computeBoundaries({ columns, types }) {
   let max
 
   columns.forEach(col => {
-    if (types[col[0]] !== line) {
+    if (types[col[0]] !== 'line') {
       return;
     }
 
