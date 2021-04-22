@@ -30,7 +30,6 @@ function chart(canvas, data) {
   });
 
   function mousemove({ clientX, clientY }) {
-    console.log(clientX)
     proxy.mouse = {
       x: clientX,
     }
@@ -53,7 +52,7 @@ function chart(canvas, data) {
     const xData = data.columns.filter(col => data.types[col[0]] === 'line')[0];
 
     yAxis(ctx, yMin, yMax);
-    xAxis(ctx, xData, xRatio);
+    xAxis(ctx, xData, xRatio, proxy);
 
     yData.map(toCoords(xRatio, yRatio)).forEach((coords, i) => {
       const color = data.colors[yData[i][0]];
@@ -99,14 +98,20 @@ function yAxis(ctx, yMin, yMax) {
   ctx.closePath();
 }
 
-function xAxis(ctx, data, xRatio) {
+function xAxis(ctx, data, xRatio, { mouse }) {
   const colsCount = 6;
   const step = Math.round(data.length / colsCount);
   ctx.beginPath();
-  for (let i = 1; i < data.length; i += step) {
-    const text = toDate(data[i]);
+  for (let i = 1; i < data.length; i++) {
     const x = i * xRatio;
-    ctx.fillText(text.toString(), x, DPI_HEIGHT - 10);
+    if ((i - 1) % step === 0) {
+      const text = toDate(data[i]);
+      ctx.fillText(text.toString(), x, DPI_HEIGHT - 10);
+    }
+
+    if (isOver(mouse, x, data.length)) {
+      console.log('over')
+    }
   }
   ctx.closePath();
 }
@@ -533,4 +538,11 @@ function getChartData() {
       },
     },
   ][0]
+}
+
+function isOver(mouse, x, length) {
+  if (!mouse) return false;
+
+  const width = DPI_WIDTH / length;
+  return Math.abs(x - mouse.x) < width / 2;
 }
