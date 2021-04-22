@@ -61,8 +61,8 @@ function chart(canvas, data) {
     const yData = data.columns.filter(col => data.types[col[0]] === 'line');
     const xData = data.columns.filter(col => data.types[col[0]] === 'line')[0];
 
-    yAxis(ctx, yMin, yMax);
-    xAxis(ctx, xData, xRatio, proxy);
+    yAxis(yMin, yMax);
+    xAxis(xData, xRatio);
 
     yData.map(toCoords(xRatio, yRatio)).forEach((coords, i) => {
       const color = data.colors[yData[i][0]];
@@ -76,6 +76,49 @@ function chart(canvas, data) {
       }
     });
   }
+
+  function xAxis(xData, xRatio) {
+    const colsCount = 6;
+    const step = Math.round(xData.length / colsCount);
+    ctx.beginPath();
+    for (let i = 1; i < xData.length; i++) {
+      const x = i * xRatio;
+      if ((i - 1) % step === 0) {
+        const text = toDate(xData[i]);
+        ctx.fillText(text.toString(), x, DPI_HEIGHT - 10);
+      }
+
+      if (isOver(proxy.mouse, x, xData.length, DPI_WIDTH)) {
+        ctx.save();
+        ctx.moveTo(x, PADDING);
+        ctx.lineTo(x, DPI_HEIGHT - PADDING);
+        ctx.restore();
+      }
+    }
+    ctx.stroke();
+    ctx.closePath();
+  }
+
+  function yAxis(yMin, yMax) {
+    const step = VIEW_HEIGHT / ROWS_COUNT;
+    const textStep = Math.floor((yMax - yMin) / ROWS_COUNT);
+
+    ctx.beginPath();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#bbb';
+    ctx.font = 'normal 20px Helvetica, sans-serif';
+    ctx.fillStyle = '#96a2aa';
+    for (let i = 1; i <= ROWS_COUNT; i++) {
+      const y = step * i;
+      const text = yMax - textStep * i;
+      ctx.fillText(text.toString(), 5, y + PADDING - 10);
+      ctx.moveTo(0, y + PADDING);
+      ctx.lineTo(DPI_WIDTH, y + PADDING);
+    }
+    ctx.stroke();
+    ctx.closePath();
+  }
+
 
   return {
     init() {
@@ -94,46 +137,4 @@ function toCoords(xRatio, yRatio) {
     Math.floor((i) * xRatio),
     Math.floor(DPI_HEIGHT - PADDING - y * yRatio),
   ])
-}
-
-function yAxis(ctx, yMin, yMax) {
-  const step = VIEW_HEIGHT / ROWS_COUNT;
-  const textStep = Math.floor((yMax - yMin) / ROWS_COUNT);
-
-  ctx.beginPath();
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = '#bbb';
-  ctx.font = 'normal 20px Helvetica, sans-serif';
-  ctx.fillStyle = '#96a2aa';
-  for (let i = 1; i <= ROWS_COUNT; i++) {
-    const y = step * i;
-    const text = yMax - textStep * i;
-    ctx.fillText(text.toString(), 5, y + PADDING - 10);
-    ctx.moveTo(0, y + PADDING);
-    ctx.lineTo(DPI_WIDTH, y + PADDING);
-  }
-  ctx.stroke();
-  ctx.closePath();
-}
-
-function xAxis(ctx, data, xRatio, { mouse }) {
-  const colsCount = 6;
-  const step = Math.round(data.length / colsCount);
-  ctx.beginPath();
-  for (let i = 1; i < data.length; i++) {
-    const x = i * xRatio;
-    if ((i - 1) % step === 0) {
-      const text = toDate(data[i]);
-      ctx.fillText(text.toString(), x, DPI_HEIGHT - 10);
-    }
-
-    if (isOver(mouse, x, data.length, DPI_WIDTH)) {
-      ctx.save();
-      ctx.moveTo(x, PADDING);
-      ctx.lineTo(x, DPI_HEIGHT - PADDING);
-      ctx.restore();
-    }
-  }
-  ctx.stroke();
-  ctx.closePath();
 }
