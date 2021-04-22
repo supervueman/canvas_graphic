@@ -10,27 +10,54 @@ const ROWS_COUNT = 5;
 function chart(canvas, data) {
   console.log(data)
   const ctx = canvas.getContext('2d');
+  let raf;
 
   canvas.style.width = `${WIDTH}px`;
   canvas.style.height = `${HEIGHT}px`;
   canvas.width = DPI_WIDTH;
   canvas.height = DPI_HEIGHT;
 
-  const [yMin, yMax] = computeBoundaries(data);
-  const yRatio = VIEW_HEIGHT / (yMax - yMin);
-  const xRatio = VIEW_WIDTH / (data.columns[0].length - 2);
-
-
-  const yData = data.columns.filter(col => data.types[col[0]] === 'line');
-  const xData = data.columns.filter(col => data.types[col[0]] === 'line')[0];
-
-  yAxis(ctx, yMin, yMax);
-  xAxis(ctx, xData, xRatio);
-
-  yData.map(toCoords(xRatio, yRatio)).forEach((coords, i) => {
-    const color = data.colors[yData[i][0]];
-    line(ctx, coords, { color });
+  const proxy = new Proxy({}, {
+    set(...args) {
+      const result = Reflect.set(...args);
+      raf = requestAnimationFrame(paint);
+      return result;
+    }
   });
+
+  function mousemove({ clientX, clientY }) {
+    console.log(clientX)
+    proxy.mouse = {
+      x: clientX,
+    }
+  }
+
+  canvas.addEventListener('mousemove', mousemove);
+
+  function paint () {
+    const [yMin, yMax] = computeBoundaries(data);
+    const yRatio = VIEW_HEIGHT / (yMax - yMin);
+    const xRatio = VIEW_WIDTH / (data.columns[0].length - 2);
+
+
+    const yData = data.columns.filter(col => data.types[col[0]] === 'line');
+    const xData = data.columns.filter(col => data.types[col[0]] === 'line')[0];
+
+    yAxis(ctx, yMin, yMax);
+    xAxis(ctx, xData, xRatio);
+
+    yData.map(toCoords(xRatio, yRatio)).forEach((coords, i) => {
+      const color = data.colors[yData[i][0]];
+      line(ctx, coords, { color });
+    });
+  }
+
+  return {
+    destroy() {
+      cancelAnimationFrame(raf);
+      canvas.removeEventListener('mousemove', mousemove);
+    }
+  }
 }
 
 function toCoords(xRatio, yRatio) {
