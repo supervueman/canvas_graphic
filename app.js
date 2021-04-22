@@ -20,9 +20,12 @@ function chart(canvas, data) {
   const yRatio = VIEW_HEIGHT / (yMax - yMin);
   const xRatio = VIEW_WIDTH / (data.columns[0].length - 2);
 
-  yAxis(ctx, yMin, yMax);
 
   const yData = data.columns.filter(col => data.types[col[0]] === 'line');
+  const xData = data.columns.filter(col => data.types[col[0]] === 'line')[0];
+
+  yAxis(ctx, yMin, yMax);
+  xAxis(ctx, xData, xRatio);
 
   yData.map(toCoords(xRatio, yRatio)).forEach((coords, i) => {
     const color = data.colors[yData[i][0]];
@@ -53,6 +56,18 @@ function yAxis(ctx, yMin, yMax) {
     ctx.lineTo(DPI_WIDTH, y + PADDING);
   }
   ctx.stroke();
+  ctx.closePath();
+}
+
+function xAxis(ctx, data, xRatio) {
+  const colsCount = 6;
+  const step = Math.round(data.length / colsCount);
+  ctx.beginPath();
+  for (let i = 1; i < data.length; i += step) {
+    const text= new Date(data[i]).toDateString();
+    const x = i * xRatio;
+    ctx.fillText(text.toString(), x, DPI_HEIGHT);
+  }
   ctx.closePath();
 }
 
@@ -92,6 +107,27 @@ function computeBoundaries({ columns, types }) {
   })
 
   return [min, max];
+}
+
+function toDate(timestamp) {
+  const shortMonths = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  const date = new Date(timestamp);
+
+  return `${shortMonths[date.getMonth()]} ${date.getDate()}`;
 }
 
 function getChartData() {
