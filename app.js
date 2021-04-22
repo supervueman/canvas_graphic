@@ -6,7 +6,7 @@ const DPI_HEIGHT = HEIGHT * 2;
 const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2;
 const VIEW_WIDTH = DPI_WIDTH;
 const ROWS_COUNT = 5;
-const CIRCLE_RADIUS = 10;
+const CIRCLE_RADIUS = 8;
 
 const tgChart = chart(document.getElementById('chart'), getChartData());
 
