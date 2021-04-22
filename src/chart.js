@@ -1,4 +1,5 @@
-import { isOver, toDate, line, circle, boundaries } from './utils';
+import { isOver, toDate, line, circle, boundaries, css } from './utils';
+import { tooltip } from './tooltip';
 
 const WIDTH = 600;
 const HEIGHT = 200;
@@ -9,13 +10,18 @@ const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2;
 const VIEW_WIDTH = DPI_WIDTH;
 const ROWS_COUNT = 5;
 
-export function chart(canvas, data) {
+export function chart(root, data) {
   console.log(data)
+  const canvas = root.querySelector('canvas');
   const ctx = canvas.getContext('2d');
+  const tip = tooltip(root.querySelector('[data-el="tooltip"]'));
   let raf;
 
-  canvas.style.width = `${WIDTH}px`;
-  canvas.style.height = `${HEIGHT}px`;
+  css(canvas, {
+    width: `${WIDTH}px`,
+    height: `${HEIGHT}px`,
+  });
+
   canvas.width = DPI_WIDTH;
   canvas.height = DPI_HEIGHT;
 
