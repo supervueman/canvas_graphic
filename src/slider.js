@@ -21,9 +21,37 @@ export function sliderChart(root, data, DPI_WIDTH) {
   const $window = root.querySelector('[data-el="window"]');
   const $right = root.querySelector('[data-el="right"]');
 
-  function mousedown(event) {}
+  function mousedown(event) {
+    const type = event.target.dataset.type;
+    const dimensions = {
+      left: parseInt($window.style.left),
+      right: parseInt($window.style.right),
+      width: parseInt($window.style.width),
+    };
+
+    if (type === 'window') {
+      const startX = event.pageX;
+      document.onmousemove = e => {
+        const delta = startX - e.pageX;
+
+        if (delta === 0) {
+          return;
+        }
+        const left = dimensions.left - delta;
+        const right = WIDTH - dimensions.width - left;
+
+        setPosition(left, right);
+      }
+    }
+  }
+
+  function mouseup() {
+    document.onmousemove = null;
+  }
 
   root.addEventListener('mousedown', mousedown);
+
+  document.addEventListener('mouseup', mouseup)
 
   const defaultWidth = WIDTH * 0.3;
   setPosition(0, WIDTH - defaultWidth);
