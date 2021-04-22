@@ -7,7 +7,9 @@ const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2;
 const VIEW_WIDTH = DPI_WIDTH;
 const ROWS_COUNT = 5;
 
-chart(document.getElementById('chart'), getChartData());
+const tgChart = chart(document.getElementById('chart'), getChartData());
+
+tgChart.init();
 
 function chart(canvas, data) {
   console.log(data)
