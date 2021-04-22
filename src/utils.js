@@ -72,3 +72,7 @@ export function boundaries({ columns, types }) {
 
   return [min, max];
 }
+
+export function css(el, style = {}) {
+  Object.assign(el.style, styles);
+}
