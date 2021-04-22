@@ -1,4 +1,4 @@
-import { css, boundaries, toCoords, isOver, line } from './utils';
+import { css, boundaries, toCoords, line } from './utils';
 
 const HEIGHT = 40;
 const DPI_HEIGHT = HEIGHT * 2;
