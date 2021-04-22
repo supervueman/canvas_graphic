@@ -37,3 +37,14 @@ export function line(ctx, coords, { color }) {
   ctx.stroke();
   ctx.closePath();
 }
+
+export function circle(ctx, [x, y], color) {
+  const CIRCLE_RADIUS = 8;
+  ctx.beginPath();
+  ctx.strokeStyle = color;
+  ctx.fillStyle = '#fff';
+  ctx.arc(x, y, CIRCLE_RADIUS, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  ctx.closePath();
+}

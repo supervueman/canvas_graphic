@@ -1,5 +1,5 @@
 import { getChartData } from './data';
-import { isOver, toDate, line } from './utils';
+import { isOver, toDate, line, circle } from './utils';
 import './styles.scss';
 
 const WIDTH = 600;
@@ -10,7 +10,6 @@ const DPI_HEIGHT = HEIGHT * 2;
 const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2;
 const VIEW_WIDTH = DPI_WIDTH;
 const ROWS_COUNT = 5;
-const CIRCLE_RADIUS = 8;
 
 const tgChart = chart(document.getElementById('chart'), getChartData());
 
@@ -135,16 +134,6 @@ function xAxis(ctx, data, xRatio, { mouse }) {
       ctx.restore();
     }
   }
-  ctx.stroke();
-  ctx.closePath();
-}
-
-function circle(ctx, [x, y], color) {
-  ctx.beginPath();
-  ctx.strokeStyle = color;
-  ctx.fillStyle = '#fff';
-  ctx.arc(x, y, CIRCLE_RADIUS, 0, Math.PI * 2);
-  ctx.fill();
   ctx.stroke();
   ctx.closePath();
 }
