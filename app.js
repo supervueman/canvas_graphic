@@ -22,19 +22,23 @@ function chart(canvas, data) {
 
   yAxis(ctx, yMin, yMax);
 
-  data.columns.forEach(col => {
+  const yData = data.columns.filter(col => data.types[col[0]] === 'line');
+
+  yData.forEach(col => {
     const name = col[0];
-    if (data.types[name] === 'line') {
-      const coords = col.filter(el => typeof el !== 'string').map((y, i) => [
-        Math.floor((i) * xRatio),
-        Math.floor(DPI_HEIGHT - PADDING - y * yRatio)
-      ]);
+    const coords = col.filter(el => typeof el !== 'string').map(toCoords(xRatio, yRatio));
 
-      const color = data.colors[name];
+    const color = data.colors[name];
 
-      line(ctx, coords, { color });
-    }
-  })
+    line(ctx, coords, { color });
+  });
+}
+
+function toCoords(xRatio, yRatio) {
+  return (y, i) => [
+    Math.floor((i) * xRatio),
+    Math.floor(DPI_HEIGHT - PADDING - y * yRatio),
+  ]
 }
 
 function yAxis(ctx, yMin, yMax) {
