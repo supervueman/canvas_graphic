@@ -1,5 +1,6 @@
-import { isOver, toDate, line, circle, boundaries, css } from './utils';
+import { isOver, toDate, line, circle, boundaries, css, toCoords } from './utils';
 import { tooltip } from './tooltip';
+import { sliderChart } from './slider';
 
 const WIDTH = 600;
 const HEIGHT = 200;
@@ -12,9 +13,10 @@ const ROWS_COUNT = 5;
 
 export function chart(root, data) {
   console.log(data)
-  const canvas = root.querySelector('canvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = root.querySelector('[data-el="main"]');
   const tip = tooltip(root.querySelector('[data-el="tooltip"]'));
+  const slider = sliderChart(root.querySelector('[data-el="slider"]'), data, DPI_WIDTH);
+  const ctx = canvas.getContext('2d');
   let raf;
 
   css(canvas, {
@@ -66,7 +68,7 @@ export function chart(root, data) {
     yAxis(yMin, yMax);
     xAxis(xData, yData, xRatio);
 
-    yData.map(toCoords(xRatio, yRatio)).forEach((coords, i) => {
+    yData.map(toCoords(xRatio, yRatio, DPI_HEIGHT, PADDING)).forEach((coords, i) => {
       const color = data.colors[yData[i][0]];
       line(ctx, coords, { color });
 
@@ -143,11 +145,4 @@ export function chart(root, data) {
       canvas.removeEventListener('mouseleave', mouseleave);
     }
   }
-}
-
-function toCoords(xRatio, yRatio) {
-  return (col) => col.filter(el => typeof el !== 'string').map((y, i) => [
-    Math.floor((i) * xRatio),
-    Math.floor(DPI_HEIGHT - PADDING - y * yRatio),
-  ])
 }
