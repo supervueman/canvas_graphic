@@ -5,6 +5,7 @@ const DPI_HEIGHT = HEIGHT * 2;
 
 export function sliderChart(root, data, DPI_WIDTH) {
   const WIDTH = DPI_WIDTH / 2;
+  const MIN_WIDTH = WIDTH * 0.05;
   const canvas = root.querySelector('canvas');
   const ctx = canvas.getContext('2d');
 
@@ -15,6 +16,48 @@ export function sliderChart(root, data, DPI_WIDTH) {
 
   canvas.width = DPI_WIDTH;
   canvas.height = DPI_HEIGHT;
+
+  const $left = root.querySelector('[data-el="left"]');
+  const $window = root.querySelector('[data-el="window"]');
+  const $right = root.querySelector('[data-el="right"]');
+
+  function mousedown(event) {}
+
+  root.addEventListener('mousedown', mousedown);
+
+  const defaultWidth = WIDTH * 0.3;
+  setPosition(0, WIDTH - defaultWidth);
+
+  function setPosition(left, right) {
+    const w = WIDTH - right - left;
+
+    if (w < MIN_WIDTH) {
+      css($window, {
+        width: `${MIN_WIDTH}px`,
+      });
+      return;
+    }
+
+    if (left < 0) {
+      css($window, { left: '0px' });
+      css($left, { width: '0px' });
+      return;
+    }
+
+    if (right < 0) {
+      css($window, { left: '0px' });
+      css($right, { width: '0px' });
+      return;
+    }
+
+    css($window, {
+      width: `${w}px`,
+      left: `${left}px`,
+      right: `${right}px`,
+    });
+    css($right, { width: `${right}px`});
+    css($left, { width: `${left}px`});
+  }
 
   const [yMin, yMax] = boundaries(data);
   const yRatio = DPI_HEIGHT / (yMax - yMin);
