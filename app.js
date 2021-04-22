@@ -7,6 +7,8 @@ const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2;
 const VIEW_WIDTH = DPI_WIDTH;
 const ROWS_COUNT = 5;
 
+chart(document.getElementById('chart'), getChartData());
+
 function chart(canvas, data) {
   console.log(data)
   const ctx = canvas.getContext('2d');
@@ -58,6 +60,9 @@ function chart(canvas, data) {
   }
 
   return {
+    init() {
+      paint();
+    },
     destroy() {
       cancelAnimationFrame(raf);
       canvas.removeEventListener('mousemove', mousemove);
@@ -114,8 +119,6 @@ function line(ctx, coords, { color }) {
   ctx.stroke();
   ctx.closePath();
 }
-
-chart(document.getElementById('chart'), getChartData());
 
 function computeBoundaries({ columns, types }) {
   let min
