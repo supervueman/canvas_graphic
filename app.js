@@ -22,7 +22,7 @@ function chart(canvas, data) {
 
   // === y axis
   const step = VIEW_HEIGHT / ROWS_COUNT;
-  const textStep = (yMax - yMin) / ROWS_COUNT;
+  const textStep = Math.floor((yMax - yMin) / ROWS_COUNT);
 
   ctx.beginPath();
   ctx.strokeStyle = '#bbb';
