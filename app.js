@@ -3,7 +3,8 @@ const HEIGHT = 200;
 const PADDING = 40;
 const DPI_WIDTH = WIDTH * 2;
 const DPI_HEIGHT = HEIGHT * 2;
-const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2
+const VIEW_HEIGHT = DPI_HEIGHT - PADDING * 2;
+const VIEW_WIDTH = DPI_WIDTH;
 const ROWS_COUNT = 5;
 
 function chart(canvas, data) {
@@ -17,6 +18,7 @@ function chart(canvas, data) {
 
   const [yMin, yMax] = computeBoundaries(data);
   const yRatio = VIEW_HEIGHT / (yMax - yMin);
+  const xRatio = VIEW_WIDTH / data.columns[0].length;
 
   // === y axis
   const step = VIEW_HEIGHT / ROWS_COUNT;
@@ -37,12 +39,27 @@ function chart(canvas, data) {
   ctx.closePath();
   // ===
 
+  data.columns.forEach(col => {
+    const name = col[0];
+    if (data.types[name] === 'line') {
+      const coords = col.filter(el => typeof el !== 'string').map((y, i) => [
+        Math.floor((i) * xRatio),
+        Math.floor(DPI_HEIGHT - PADDING - y * yRatio)
+      ]);
+
+      line(ctx, coords);
+    }
+  })
+}
+
+function line(ctx, coords) {
   ctx.beginPath();
   ctx.lineWidth = 4;
   ctx.strokeStyle = '#ff0100';
 
-  for (const [x, y] of data) {
-    ctx.lineTo(x, DPI_HEIGHT - PADDING - y * yRatio);
+  for (const [x, y] of coords) {
+    // ctx.lineTo(x, DPI_HEIGHT - PADDING - y * yRatio);
+    ctx.lineTo(x, y);
   }
   ctx.stroke();
   ctx.closePath();
