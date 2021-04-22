@@ -64,7 +64,7 @@ function xAxis(ctx, data, xRatio) {
   const step = Math.round(data.length / colsCount);
   ctx.beginPath();
   for (let i = 1; i < data.length; i += step) {
-    const text= new Date(data[i]).toDateString();
+    const text = toDate(data[i]);
     const x = i * xRatio;
     ctx.fillText(text.toString(), x, DPI_HEIGHT);
   }
