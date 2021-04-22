@@ -47,18 +47,19 @@ function chart(canvas, data) {
         Math.floor(DPI_HEIGHT - PADDING - y * yRatio)
       ]);
 
-      line(ctx, coords);
+      const color = data.colors[name];
+
+      line(ctx, coords, { color });
     }
   })
 }
 
-function line(ctx, coords) {
+function line(ctx, coords, { color }) {
   ctx.beginPath();
   ctx.lineWidth = 4;
-  ctx.strokeStyle = '#ff0100';
+  ctx.strokeStyle = color;
 
   for (const [x, y] of coords) {
-    // ctx.lineTo(x, DPI_HEIGHT - PADDING - y * yRatio);
     ctx.lineTo(x, y);
   }
   ctx.stroke();
