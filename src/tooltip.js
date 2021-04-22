@@ -19,14 +19,14 @@ export function tooltip(el) {
 
   return {
     show({ left, top }, data) {
-      const { height, width } = el.getClientBoundingRect();
+      const { height, width } = el.getBoundingClientRect();
       clear();
       css(el, {
         display: 'block',
         top: `${top - height}px`,
         left: `${left + width / 2}px`,
       });
-      el.insertAdjacentHtml('afterbegin', template(data));
+      el.insertAdjacentHTML('afterbegin', template(data));
     },
     hide() {
       css(el, { display: 'none' });
