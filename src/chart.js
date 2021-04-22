@@ -46,6 +46,7 @@ export function chart(root, data) {
 
   function mouseleave () {
     proxy.mouse = null;
+    tip.hide();
   }
 
   function clear() {
