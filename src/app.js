@@ -1,5 +1,5 @@
 import { getChartData } from './data';
-import { isOver, toDate } from './utils';
+import { isOver, toDate, line } from './utils';
 import './styles.scss';
 
 const WIDTH = 600;
@@ -134,18 +134,6 @@ function xAxis(ctx, data, xRatio, { mouse }) {
       ctx.lineTo(x, DPI_HEIGHT - PADDING);
       ctx.restore();
     }
-  }
-  ctx.stroke();
-  ctx.closePath();
-}
-
-function line(ctx, coords, { color }) {
-  ctx.beginPath();
-  ctx.lineWidth = 4;
-  ctx.strokeStyle = color;
-
-  for (const [x, y] of coords) {
-    ctx.lineTo(x, y);
   }
   ctx.stroke();
   ctx.closePath();
