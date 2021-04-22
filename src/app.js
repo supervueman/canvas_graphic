@@ -1,5 +1,5 @@
 import { getChartData } from './data';
-import { isOver, toDate, line, circle } from './utils';
+import { isOver, toDate, line, circle, boundaries } from './utils';
 import './styles.scss';
 
 const WIDTH = 600;
@@ -53,7 +53,7 @@ function chart(canvas, data) {
 
   function paint () {
     clear();
-    const [yMin, yMax] = computeBoundaries(data);
+    const [yMin, yMax] = boundaries(data);
     const yRatio = VIEW_HEIGHT / (yMax - yMin);
     const xRatio = VIEW_WIDTH / (data.columns[0].length - 2);
 
@@ -136,28 +136,4 @@ function xAxis(ctx, data, xRatio, { mouse }) {
   }
   ctx.stroke();
   ctx.closePath();
-}
-
-function computeBoundaries({ columns, types }) {
-  let min
-  let max
-
-  columns.forEach(col => {
-    if (types[col[0]] !== 'line') {
-      return;
-    }
-
-    if (typeof min !== 'number') min = col[1];
-    if (typeof max !== 'number') max = col[1];
-
-    if (min > col[1]) min = col[1];
-    if (max < col[1]) max = col[1];
-
-    for (let i = 2; i < col.length; i++) {
-      if (min > col[i]) min = col[i];
-      if (max < col[i]) max = col[i];
-    }
-  })
-
-  return [min, max];
 }
