@@ -84,6 +84,7 @@ function yAxis(ctx, yMin, yMax) {
   const textStep = Math.floor((yMax - yMin) / ROWS_COUNT);
 
   ctx.beginPath();
+  ctx.lineWidth = 1;
   ctx.strokeStyle = '#bbb';
   ctx.font = 'normal 20px Helvetica, sans-serif';
   ctx.fillStyle = '#96a2aa';
