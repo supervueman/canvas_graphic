@@ -114,7 +114,7 @@ function xAxis(ctx, data, xRatio, { mouse }) {
       console.log('over')
       ctx.save();
       ctx.moveTo(x, PADDING);
-      ctx.lineTo(x, DPI_WIDTH - PADDING);
+      ctx.lineTo(x, DPI_HEIGHT - PADDING);
       ctx.restore();
     }
   }
