@@ -24,21 +24,17 @@ function chart(canvas, data) {
 
   const yData = data.columns.filter(col => data.types[col[0]] === 'line');
 
-  yData.forEach(col => {
-    const name = col[0];
-    const coords = col.filter(el => typeof el !== 'string').map(toCoords(xRatio, yRatio));
-
-    const color = data.colors[name];
-
+  yData.map(toCoords(xRatio, yRatio)).forEach((coords, i) => {
+    const color = data.colors[yData[i][0]];
     line(ctx, coords, { color });
   });
 }
 
 function toCoords(xRatio, yRatio) {
-  return (y, i) => [
+  return (col) => col.filter(el => typeof el !== 'string').map((y, i) => [
     Math.floor((i) * xRatio),
     Math.floor(DPI_HEIGHT - PADDING - y * yRatio),
-  ]
+  ])
 }
 
 function yAxis(ctx, yMin, yMax) {
