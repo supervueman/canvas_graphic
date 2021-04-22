@@ -1,3 +1,5 @@
+import './styles.scss';
+
 const WIDTH = 600;
 const HEIGHT = 200;
 const PADDING = 40;
@@ -179,6 +181,13 @@ function computeBoundaries({ columns, types }) {
   })
 
   return [min, max];
+}
+
+function isOver(mouse, x, length) {
+  if (!mouse) return false;
+
+  const width = DPI_WIDTH / length;
+  return Math.abs(x - mouse.x) < width / 2;
 }
 
 function toDate(timestamp) {
@@ -567,11 +576,4 @@ function getChartData() {
       },
     },
   ][0]
-}
-
-function isOver(mouse, x, length) {
-  if (!mouse) return false;
-
-  const width = DPI_WIDTH / length;
-  return Math.abs(x - mouse.x) < width / 2;
 }
