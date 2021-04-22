@@ -36,7 +36,12 @@ function chart(canvas, data) {
     }
   }
 
+  function mouseleave () {
+    proxy.mouse = null;
+  }
+
   canvas.addEventListener('mousemove', mousemove);
+  canvas.addEventListener('mouseleave', mouseleave)
 
   function clear() {
     ctx.clearRect(0, 0, DPI_WIDTH, DPI_HEIGHT);
@@ -68,6 +73,7 @@ function chart(canvas, data) {
     destroy() {
       cancelAnimationFrame(raf);
       canvas.removeEventListener('mousemove', mousemove);
+      canvas.removeEventListener('mouseleave', mouseleave);
     }
   }
 }
@@ -111,7 +117,6 @@ function xAxis(ctx, data, xRatio, { mouse }) {
     }
 
     if (isOver(mouse, x, data.length)) {
-      console.log('over')
       ctx.save();
       ctx.moveTo(x, PADDING);
       ctx.lineTo(x, DPI_HEIGHT - PADDING);
