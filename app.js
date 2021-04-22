@@ -20,7 +20,24 @@ function chart(canvas, data) {
   const yRatio = VIEW_HEIGHT / (yMax - yMin);
   const xRatio = VIEW_WIDTH / (data.columns[0].length - 2);
 
-  // === y axis
+  yAxis(ctx, yMin, yMax);
+
+  data.columns.forEach(col => {
+    const name = col[0];
+    if (data.types[name] === 'line') {
+      const coords = col.filter(el => typeof el !== 'string').map((y, i) => [
+        Math.floor((i) * xRatio),
+        Math.floor(DPI_HEIGHT - PADDING - y * yRatio)
+      ]);
+
+      const color = data.colors[name];
+
+      line(ctx, coords, { color });
+    }
+  })
+}
+
+function yAxis(ctx, yMin, yMax) {
   const step = VIEW_HEIGHT / ROWS_COUNT;
   const textStep = Math.floor((yMax - yMin) / ROWS_COUNT);
 
@@ -37,21 +54,6 @@ function chart(canvas, data) {
   }
   ctx.stroke();
   ctx.closePath();
-  // ===
-
-  data.columns.forEach(col => {
-    const name = col[0];
-    if (data.types[name] === 'line') {
-      const coords = col.filter(el => typeof el !== 'string').map((y, i) => [
-        Math.floor((i) * xRatio),
-        Math.floor(DPI_HEIGHT - PADDING - y * yRatio)
-      ]);
-
-      const color = data.colors[name];
-
-      line(ctx, coords, { color });
-    }
-  })
 }
 
 function line(ctx, coords, { color }) {
