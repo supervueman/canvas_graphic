@@ -100,7 +100,7 @@ export function chart(root, data) {
           items: yData.map(col => ({
             color: data.colors[col[0]],
             name: data.names[col[0]],
-            value: col[i],
+            value: col[i + 1],
           })),
         });
       }
