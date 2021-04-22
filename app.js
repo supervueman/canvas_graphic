@@ -30,8 +30,9 @@ function chart(canvas, data) {
   });
 
   function mousemove({ clientX, clientY }) {
+    const { left } = canvas.getBoundingClientRect()
     proxy.mouse = {
-      x: clientX,
+      x: (clientX - left) * 2,
     }
   }
 
@@ -111,8 +112,13 @@ function xAxis(ctx, data, xRatio, { mouse }) {
 
     if (isOver(mouse, x, data.length)) {
       console.log('over')
+      ctx.save();
+      ctx.moveTo(x, PADDING);
+      ctx.lineTo(x, DPI_WIDTH - PADDING);
+      ctx.restore();
     }
   }
+  ctx.stroke();
   ctx.closePath();
 }
 
