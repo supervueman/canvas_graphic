@@ -34,7 +34,12 @@ function chart(canvas, data) {
 
   canvas.addEventListener('mousemove', mousemove);
 
+  function clear() {
+    ctx.clearRect(0, 0, DPI_WIDTH, DPI_HEIGHT);
+  }
+
   function paint () {
+    clear();
     const [yMin, yMax] = computeBoundaries(data);
     const yRatio = VIEW_HEIGHT / (yMax - yMin);
     const xRatio = VIEW_WIDTH / (data.columns[0].length - 2);
