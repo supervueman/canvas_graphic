@@ -34,18 +34,19 @@ export function chart(root, data) {
   });
 
   function mousemove({ clientX, clientY }) {
-    const { left } = canvas.getBoundingClientRect()
+    const { left, top } = canvas.getBoundingClientRect()
     proxy.mouse = {
       x: (clientX - left) * 2,
+      tooltip: {
+        left: clientX - left,
+        top: clientY - top,
+      },
     }
   }
 
   function mouseleave () {
     proxy.mouse = null;
   }
-
-  canvas.addEventListener('mousemove', mousemove);
-  canvas.addEventListener('mouseleave', mouseleave)
 
   function clear() {
     ctx.clearRect(0, 0, DPI_WIDTH, DPI_HEIGHT);
@@ -59,7 +60,7 @@ export function chart(root, data) {
 
 
     const yData = data.columns.filter(col => data.types[col[0]] === 'line');
-    const xData = data.columns.filter(col => data.types[col[0]] === 'line')[0];
+    const xData = data.columns.filter(col => data.types[col[0]] !== 'line')[0];
 
     yAxis(yMin, yMax);
     xAxis(xData, xRatio);
@@ -93,6 +94,11 @@ export function chart(root, data) {
         ctx.moveTo(x, PADDING);
         ctx.lineTo(x, DPI_HEIGHT - PADDING);
         ctx.restore();
+
+        tip.show(proxy.mouse.tooltip, {
+          title: toDate(xData[i]),
+          items: [],
+        });
       }
     }
     ctx.stroke();
@@ -118,6 +124,9 @@ export function chart(root, data) {
     ctx.stroke();
     ctx.closePath();
   }
+
+  canvas.addEventListener('mousemove', mousemove);
+  canvas.addEventListener('mouseleave', mouseleave);
 
   return {
     init() {
