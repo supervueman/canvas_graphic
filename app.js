@@ -18,7 +18,7 @@ function chart(canvas, data) {
 
   const [yMin, yMax] = computeBoundaries(data);
   const yRatio = VIEW_HEIGHT / (yMax - yMin);
-  const xRatio = VIEW_WIDTH / data.columns[0].length;
+  const xRatio = VIEW_WIDTH / (data.columns[0].length - 2);
 
   // === y axis
   const step = VIEW_HEIGHT / ROWS_COUNT;
