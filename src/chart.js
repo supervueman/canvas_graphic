@@ -83,7 +83,7 @@ export function chart(root, data) {
     yAxis(yMin, yMax);
     xAxis(xData, yData, xRatio);
 
-    yData.map(toCoords(xRatio, yRatio, DPI_HEIGHT, PADDING)).forEach((coords, i) => {
+    yData.map(toCoords(xRatio, yRatio, DPI_HEIGHT, PADDING, yMin)).forEach((coords, i) => {
       const color = data.colors[yData[i][0]];
       line(ctx, coords, { color });
 

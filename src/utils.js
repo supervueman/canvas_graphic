@@ -1,5 +1,5 @@
 export function computeYRatio (height, max, min) {
-  return height / (max - min);
+  return (max - min) / height;
 }
 
 export function computeXRatio (width, length) {
@@ -85,9 +85,9 @@ export function css(el, styles = {}) {
   Object.assign(el.style, styles);
 }
 
-export function toCoords(xRatio, yRatio, DPI_HEIGHT, PADDING) {
+export function toCoords(xRatio, yRatio, DPI_HEIGHT, PADDING, yMin) {
   return (col) => col.filter(el => typeof el !== 'string').map((y, i) => [
     Math.floor((i) * xRatio),
-    Math.floor(DPI_HEIGHT - PADDING - y * yRatio),
+    Math.floor(DPI_HEIGHT - PADDING - (y - yMin) / yRatio),
   ])
 }
