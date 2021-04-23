@@ -35,6 +35,10 @@ export function chart(root, data) {
     }
   });
 
+  slider.subscribe(pos => {
+    console.log(pos)
+  })
+
   function mousemove({ clientX, clientY }) {
     const { left, top } = canvas.getBoundingClientRect()
     proxy.mouse = {

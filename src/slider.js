@@ -1,5 +1,7 @@
 import { css, boundaries, toCoords, line } from './utils';
 
+function noop() {}
+
 const HEIGHT = 40;
 const DPI_HEIGHT = HEIGHT * 2;
 
@@ -8,6 +10,7 @@ export function sliderChart(root, data, DPI_WIDTH) {
   const MIN_WIDTH = WIDTH * 0.05;
   const canvas = root.querySelector('canvas');
   const ctx = canvas.getContext('2d');
+  let nextFn = noop;
 
   css(canvas, {
     width: `${WIDTH}px`,
@@ -41,6 +44,7 @@ export function sliderChart(root, data, DPI_WIDTH) {
         const right = WIDTH - dimensions.width - left;
 
         setPosition(left, right);
+        next();
       }
     } else if (type === 'left' || type === 'right') {
       const startX = event.pageX;
@@ -61,6 +65,8 @@ export function sliderChart(root, data, DPI_WIDTH) {
           const right = WIDTH - (dimensions.width - delta) - dimensions.left;
           setPosition(dimensions.left, right);
         }
+
+        next();
       }
     }
   }
@@ -107,6 +113,17 @@ export function sliderChart(root, data, DPI_WIDTH) {
     css($left, { width: `${left}px`});
   }
 
+  function next() {
+    nextFn(getPosition());
+  }
+
+  function getPosition() {
+    const left = parseInt($left.style.width);
+    const right = WIDTH - parseInt($right.style.width);
+
+    return [left * 100 / WIDTH, right * 100 / WIDTH];
+  }
+
   const [yMin, yMax] = boundaries(data);
   const yRatio = DPI_HEIGHT / (yMax - yMin);
   const xRatio = DPI_WIDTH / (data.columns[0].length - 2);
@@ -117,4 +134,11 @@ export function sliderChart(root, data, DPI_WIDTH) {
     const color = data.colors[yData[i][0]];
     line(ctx, coords, { color });
   });
+
+  return {
+    subscribe(fn) {
+      nextFn = fn;
+      fn(getPosition());
+    },
+  }
 }
