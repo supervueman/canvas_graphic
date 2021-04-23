@@ -1,4 +1,4 @@
-import { isOver, toDate, line, circle, boundaries, css, toCoords } from './utils';
+import { isOver, toDate, line, circle, boundaries, css, toCoords, computeYRatio , computeXRatio } from './utils';
 import { tooltip } from './tooltip';
 import { sliderChart } from './slider';
 
@@ -74,8 +74,8 @@ export function chart(root, data) {
     });
 
     const [yMin, yMax] = boundaries({ columns, types: data.types });
-    const yRatio = VIEW_HEIGHT / (yMax - yMin);
-    const xRatio = VIEW_WIDTH / (columns[0].length - 2);
+    const yRatio = computeYRatio(VIEW_HEIGHT, yMax, yMin);
+    const xRatio = computeXRatio(VIEW_WIDTH, columns[0].length);
 
     const yData = columns.filter(col => data.types[col[0]] === 'line');
     const xData = columns.filter(col => data.types[col[0]] !== 'line')[0];

@@ -1,3 +1,11 @@
+export function computeYRatio (height, max, min) {
+  return height / (max - min);
+}
+
+export function computeXRatio (width, length) {
+  return width / (length - 2);
+}
+
 export function toDate(timestamp) {
   const shortMonths = [
     'Jan',
