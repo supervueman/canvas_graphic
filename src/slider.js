@@ -42,6 +42,26 @@ export function sliderChart(root, data, DPI_WIDTH) {
 
         setPosition(left, right);
       }
+    } else if (type === 'left' || type === 'right') {
+      const startX = event.pageX;
+      document.onmousemove = e => {
+        const delta = startX - e.pageX;
+
+        if (delta === 0) {
+          return;
+        }
+
+        if (type === 'left') {
+          const left = WIDTH - (dimensions.width + delta) - dimensions.right;
+
+          const right = WIDTH - (dimensions.width + delta) - left;
+
+          setPosition(left, right);
+        } else {
+          const right = WIDTH - (dimensions.width - delta) - dimensions.left;
+          setPosition(dimensions.left, right);
+        }
+      }
     }
   }
 
