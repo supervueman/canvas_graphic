@@ -36,7 +36,7 @@ export function chart(root, data) {
   });
 
   slider.subscribe(pos => {
-    console.log(pos)
+    proxy.pos = pos;
   })
 
   function mousemove({ clientX, clientY }) {
@@ -61,13 +61,24 @@ export function chart(root, data) {
 
   function paint () {
     clear();
-    const [yMin, yMax] = boundaries(data);
+    const length = data.columns[0].length;
+    const leftIndex = Math.round((length * proxy.pos[0]) / 100);
+    const rightIndex = Math.round((length * proxy.pos[1]) / 100);
+
+    const columns = data.columns.map(col => {
+      const res = col.slice(leftIndex, rightIndex);
+      if (typeof res[0] !== 'string') {
+        res.unshift(col[0]);
+      }
+      return res;
+    });
+
+    const [yMin, yMax] = boundaries({ columns, types: data.types });
     const yRatio = VIEW_HEIGHT / (yMax - yMin);
-    const xRatio = VIEW_WIDTH / (data.columns[0].length - 2);
+    const xRatio = VIEW_WIDTH / (columns[0].length - 2);
 
-
-    const yData = data.columns.filter(col => data.types[col[0]] === 'line');
-    const xData = data.columns.filter(col => data.types[col[0]] !== 'line')[0];
+    const yData = columns.filter(col => data.types[col[0]] === 'line');
+    const xData = columns.filter(col => data.types[col[0]] !== 'line')[0];
 
     yAxis(yMin, yMax);
     xAxis(xData, yData, xRatio);
