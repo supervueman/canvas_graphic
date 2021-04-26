@@ -142,3 +142,5 @@ export function sliderChart(root, data, DPI_WIDTH) {
     },
   }
 }
+
+// Test
